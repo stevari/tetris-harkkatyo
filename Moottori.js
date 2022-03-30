@@ -13,9 +13,14 @@ ctx.scale(BLOKIN_KOKO,BLOKIN_KOKO); //Skaalataan konteksti
 
 let kentta = new Kentta(); //luodaan uusi kenttä
 
-function pelaa() { //Aloittaa pelin
-    kentta.reset();
+function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
+    kentta.reset(); //alustetaan kenttä
     console.table(kentta.grid);
+    let palikka = new Palikka(ctx);
+    palikka.piirraPalikka();
+    
+    kentta.palikka = palikka;
+    //console.table(palikka.y);
 }
 
 
