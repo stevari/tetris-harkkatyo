@@ -11,6 +11,13 @@ ctx.canvas.height = RIVIT*BLOKIN_KOKO;
 
 ctx.scale(BLOKIN_KOKO,BLOKIN_KOKO); //Skaalataan konteksti
 
+let kentta = new Kentta(); //luodaan uusi kenttä
+
+function pelaa() { //Aloittaa pelin
+    kentta.reset();
+    console.table(kentta.grid);
+}
+
 
 
 
