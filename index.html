@@ -1,0 +1,36 @@
+<!-- index.html avulla piirretään peli selaimelle. 
+Piirtämiseen käytetään pohjana canvas -elementtiä, joka viedään pelimoottori -luokan käsiteltäväksi --> 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+  </head>
+
+  <body>
+    <div class="ruudukko">
+    <canvas id="kentta" class="pelikentta"> </canvas>
+    <div class="oikea-sarake">
+      <div>
+        <h1>TETRIS</h1>
+        <p>Pisteet: <span id="pisteet">0</span></p>
+        <p>Rivejä: <span id="tetris-riveja">0</span></p>
+        <p>Taso: <span id="taso">0</span></p>
+        <canvas id="seuraava" class="seuraava"></canvas>
+      </div>
+      <button onclick="pelaa()" class="pelaa-nappi">Pelaa</button>
+    </div>
+    </div>
+
+
+    <script type="text/javascript" src="vakiot.js"></script>
+    <script type="text/javascript" src="kentta.js"></script>
+    <script type="text/javascript" src="palikka.js"></script>
+    <script type="text/javascript" src="moottori.js"></script>
+  </body>
+</html>
