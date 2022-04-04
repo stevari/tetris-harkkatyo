@@ -4,25 +4,58 @@ sekä lopettaa pelisession.
 */
 
 const canvas = document.getElementById("kentta"); //haetaan pohjaksi kenttä, joka alustettiin html tiedostossa
-const ctx = canvas.getContext("2d"); 
+const ctx = canvas.getContext("2d");
 
-ctx.canvas.width = SARAKKEET*BLOKIN_KOKO; //Määritellään canvas vakioarvoilla
-ctx.canvas.height = RIVIT*BLOKIN_KOKO;
+ctx.canvas.width = SARAKKEET * BLOKIN_KOKO; //Määritellään canvas vakioarvoilla
+ctx.canvas.height = RIVIT * BLOKIN_KOKO;
 
-ctx.scale(BLOKIN_KOKO,BLOKIN_KOKO); //Skaalataan konteksti
+ctx.scale(BLOKIN_KOKO, BLOKIN_KOKO); //Skaalataan konteksti jotta palikan mitat sopii kentän mittoihin
+
 
 let kentta = new Kentta(); //luodaan uusi kenttä
 
-function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
-    kentta.reset(); //alustetaan kenttä
-    console.table(kentta.grid);
-    let palikka = new Palikka(ctx);
-    palikka.piirraPalikka();
-    
-    kentta.palikka = palikka;
-    //console.table(palikka.y);
-}
 
+function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
+  kentta.reset(); //alustetaan kenttä
+  let palikka = new Palikka(ctx);
+
+  console.log("palikan aloitus pos y", palikka.y)
+
+  palikka.piirraPalikka();
+
+  //Controllit määritellään ja tunnistetaan evenlistenerillä
+
+  document.addEventListener("keydown", function (event) { 
+    if (event.defaultPrevented) {
+      return;
+    }
+    if (event.code === "KeyS") {
+      // Handle "down"
+      palikka.poistaVanhaInstanssi();
+      palikka.y++;
+      palikka.piirraPalikka();
+      console.log("palikan päivitetty pos y", palikka.y)
+
+    }
+    if (event.code === "KeyA") {
+      // vensteriin
+      palikka.poistaVanhaInstanssi();
+      palikka.x--;
+      palikka.piirraPalikka();
+      
+    }
+    if (event.code === "KeyD") {
+      // höögeriin
+      palikka.poistaVanhaInstanssi();
+      palikka.x++;
+      palikka.piirraPalikka();
+      
+    }
+    event.preventDefault();
+  }, true);
+
+ 
+}
 
 
 
