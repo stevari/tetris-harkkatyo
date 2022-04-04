@@ -1,3 +1,4 @@
+
 /*
 Tetris-palikoita, eli tetromiinoja on seitsemän erilaista.
 Niiden muotoja merkitään yleensä kirjaimin I, J, L, O, S, T, ja Z.
@@ -34,6 +35,7 @@ class Palikka {
       this.y = -1;  
     }
 
+
     piirraPalikka() {
         this.ctx.fillStyle = this.color; //väritetään haluamamme kohdat valitulla värillä
         this.shape.forEach((rivi, y) => { //loopataan matriisin sarakkeet ja rivit etsien soluja, joiden arvo poikkeaa nollasta
@@ -47,7 +49,18 @@ class Palikka {
             */
             if (arvo > 0) { 
               this.ctx.fillRect(this.x + x, this.y + y, 1, 1); 
-            }
+            } 
+          });
+        });
+      }
+      poistaVanhaInstanssi(){
+        this.ctx.fillStyle = "white"; 
+        this.shape.forEach((rivi, y) => { 
+          rivi.forEach((arvo, x) => {
+            
+            if (arvo > 0) { 
+              this.ctx.fillRect(this.x + x, this.y + y, 1, 1); 
+            } 
           });
         });
       }
