@@ -53,16 +53,6 @@ class Palikka {
           });
         });
       }
-      poistaVanhaInstanssi(){
-        this.ctx.fillStyle = "white"; 
-        this.shape.forEach((rivi, y) => { 
-          rivi.forEach((arvo, x) => {
-            
-            if (arvo > 0) { 
-              this.ctx.fillRect(this.x + x, this.y + y, 1, 1); 
-            } 
-          });
-        });
-      }
+
   }
   
