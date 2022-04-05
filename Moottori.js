@@ -23,15 +23,16 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
 
   palikka.piirraPalikka();
 
-  //Controllit määritellään ja tunnistetaan evenlistenerillä
 
-  document.addEventListener("keydown", function (event) { 
+
+  document.addEventListener("keydown", function (event) {
     if (event.defaultPrevented) {
       return;
     }
     if (event.code === "KeyS") {
-      // Handle "down"
-      palikka.poistaVanhaInstanssi();
+      // alaspäin
+      //palikka.poistaVanhaInstanssi();
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); //poistaa vanhan instanssin
       palikka.y++;
       palikka.piirraPalikka();
       console.log("palikan päivitetty pos y", palikka.y)
@@ -39,22 +40,22 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
     }
     if (event.code === "KeyA") {
       // vensteriin
-      palikka.poistaVanhaInstanssi();
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       palikka.x--;
       palikka.piirraPalikka();
-      
+
     }
     if (event.code === "KeyD") {
       // höögeriin
-      palikka.poistaVanhaInstanssi();
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       palikka.x++;
       palikka.piirraPalikka();
-      
+
     }
     event.preventDefault();
   }, true);
 
- 
+
 }
 
 
