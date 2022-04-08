@@ -2,7 +2,6 @@
 Tämä luokka on pelilogiikan keskus. Moottori sitoo muut osat yhteen, alustaa kentän ja aloittaa
 sekä lopettaa pelisession.
 */
-
 const canvas = document.getElementById("kentta"); //haetaan pohjaksi kenttä, joka alustettiin html tiedostossa
 const ctx = canvas.getContext("2d");
 let kentta = new Kentta(ctx); //luodaan uusi kenttä
