@@ -13,8 +13,11 @@ esim.  L voisi olla
 jossa 2 tarkoittaa tiettyä värinumeroa.
 
 
-*/
 
+Tetromiinojen tyyppiId:t : I = 1, J = 2, L = 3, O = 4, S = 5, T = 6, Z = 7
+Löytyy siis vakiot.js/MUODOT
+
+*/
 
 class Palikka {
   ctx;
@@ -63,6 +66,47 @@ class Palikka {
         }
       });
     });
+  }
+
+
+  validiSiirto(suunta) {
+    //testataan onko seuraava siirto, esim. liike oikealle mahdollinen (rajojen sisällä eikä törmäyksiä)
+    //palikan tyypin ja nykyisen sijainnin perusteella
+    let xPos = this.x;
+    let yPos = this.y;
+    let leveys = MUODOT[this.tyyppiId].length //palikan leveys
+
+    if (suunta == "alas") {
+      return yPos < 18 //testataan ettei mene alareunan ali
+    } else if (suunta == "vasemmalle" && xPos <= 0) {//testataan ettei mene vasemmalta reunan yli
+      return false
+    } else if (suunta == "oikealle") { //seuraavassa switchissä testataan ettei mene oikealta puolelta yli. Helpoin tapa on laskea xPos + palan leveys
+      return (xPos+leveys<10)
+      //console.log("tyyppi lenght",leveys)
+    }else{
+      return true
+    }
+  }
+
+  liiku(suunta) {
+    if (this.validiSiirto(suunta)) {
+      switch (suunta) {
+        case "alas":
+            this.y++;
+          break
+        case "oikealle":
+          this.x++;
+          break
+        case "vasemmalle":
+          this.x--;
+      }
+
+    }
+
+    this.piirraPalikka();
+    console.log("palikan päivitetty pos y", palikka.y)
+    console.log("palikan päivitetty pos x", palikka.x)
+
   }
 
 }
