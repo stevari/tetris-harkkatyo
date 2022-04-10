@@ -6,38 +6,31 @@ const canvas = document.getElementById("kentta"); //haetaan pohjaksi kenttä, jo
 const ctx = canvas.getContext("2d");
 let kentta = new Kentta(ctx); //luodaan uusi kenttä
 
-
+function clear(){
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); //poistaa vanhan instanssin
+}
 function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
   kentta.reset(); //alustetaan kenttä
   //console.log("palikan aloitus pos y", palikka.y)
+  console.log(MUODOT)
   
-
   document.addEventListener("keydown", function (event) {
     palikka = kentta.palikka
+    //console.log(palikka.tyyppiId)
     if (event.defaultPrevented) {
       return;
     }
-    if (event.code === "KeyS") {
-      // alaspäin
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); //poistaa vanhan instanssin
-      palikka.y++;
-      palikka.piirraPalikka();
-      console.log("palikan päivitetty pos y", palikka.y)
-
+    if (event.code === "KeyS") { //liiku alaspäin
+      clear();
+      palikka.liiku("alas");
     }
-    if (event.code === "KeyA") {
-      // vensteriin
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      palikka.x--;
-      palikka.piirraPalikka();
-
+    if (event.code === "KeyA") { //liiku vasemmalle
+      clear();
+      palikka.liiku("vasemmalle");
     }
-    if (event.code === "KeyD") {
-      // höögeriin
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      palikka.x++;
-      palikka.piirraPalikka();
-
+    if (event.code === "KeyD") { //liiku oikealle
+      clear();
+      palikka.liiku("oikealle");
     }
     event.preventDefault();
   }, true);
