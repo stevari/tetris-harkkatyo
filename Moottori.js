@@ -14,6 +14,13 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
   //console.log("palikan aloitus pos y", palikka.y)
   console.log(MUODOT)
   
+  //luodaan uusi palikka aina kun palikka on laskeutunut
+  
+ /* if(kentta.palikka.onPohjalla()){
+    
+  }
+  */
+
   document.addEventListener("keydown", function (event) {
     palikka = kentta.palikka
     //console.log(palikka.tyyppiId)
@@ -23,6 +30,7 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
     if (event.code === "KeyS") { //liiku alaspäin
       clear();
       palikka.liiku("alas");
+      
     }
     if (event.code === "KeyA") { //liiku vasemmalle
       clear();
@@ -31,6 +39,10 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
     if (event.code === "KeyD") { //liiku oikealle
       clear();
       palikka.liiku("oikealle");
+    }
+    if (event.code === "KeyW") { //liiku oikealle
+      clear();
+      palikka.rotate(palikka);
     }
     event.preventDefault();
   }, true);
