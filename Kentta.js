@@ -28,6 +28,12 @@ class Kentta {
 
   }
 
+  luoUusiPalikka() {
+    this.reset();
+    console.log("luouusipalikka kutsuttu")
+  }
+
+
   getEmptyKentta() { //Luo matriisin joka koostuu tyhjistä soluista
     return Array.from(
       { length: RIVIT }, () => Array(SARAKKEET).fill(0)
