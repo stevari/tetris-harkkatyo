@@ -68,7 +68,9 @@ class Palikka {
     });
   }
 
-
+  onPohjalla() {
+    return this.y >= 17
+  }
   validiSiirto(suunta) {
     //testataan onko seuraava siirto, esim. liike oikealle mahdollinen (rajojen sisällä eikä törmäyksiä)
     //palikan tyypin ja nykyisen sijainnin perusteella
@@ -81,9 +83,9 @@ class Palikka {
     } else if (suunta == "vasemmalle" && xPos <= 0) {//testataan ettei mene vasemmalta reunan yli
       return false
     } else if (suunta == "oikealle") { //seuraavassa switchissä testataan ettei mene oikealta puolelta yli. Helpoin tapa on laskea xPos + palan leveys
-      return (xPos+leveys<10)
+      return (xPos + leveys < 10)
       //console.log("tyyppi lenght",leveys)
-    }else{
+    } else {
       return true
     }
   }
@@ -92,7 +94,7 @@ class Palikka {
     if (this.validiSiirto(suunta)) {
       switch (suunta) {
         case "alas":
-            this.y++;
+          this.y++;
           break
         case "oikealle":
           this.x++;
@@ -102,11 +104,29 @@ class Palikka {
       }
 
     }
-
     this.piirraPalikka();
     console.log("palikan päivitetty pos y", palikka.y)
     console.log("palikan päivitetty pos x", palikka.x)
 
+  }
+
+  rotate(palikka) {
+    // Clone with JSON for immutability
+    let klooni = JSON.parse(JSON.stringify(palikka));
+    // Transpose matrix, p is the Piece.
+    for (let y = 0; y < klooni.shape.length; ++y) {
+      for (let x = 0; x < y; ++x) {
+        [klooni.shape[x][y], klooni.shape[y][x]] = [klooni.shape[y][x], klooni.shape[x][y]];
+      }
+    }
+    
+    klooni.shape.forEach(row => row.reverse());
+    palikka.shape = klooni.shape;
+    //console.log("klooni",klooni)
+    //console.log("palikka",palikka)
+    this.piirraPalikka();
+    
+    
   }
 
 }
