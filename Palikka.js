@@ -26,6 +26,7 @@ class Palikka {
   color;
   shape;
   tyyppiId;
+  todellinenLeveys;
 
 
   constructor(ctx) {
@@ -43,12 +44,35 @@ class Palikka {
     this.color = VARIT[this.tyyppiId]
     this.x = 0
     this.y = 0
+    this.todellinenLeveys = this.getTodellinenLeveys();
 
   }
+
+  getTodellinenLeveys(){
+    let pisinRivi =0;
+    let leveys = 0;
+    this.shape.forEach((rivi, y) => { 
+      leveys =0;
+      rivi.forEach((arvo, x) => {
+        if (arvo > 0) {
+          leveys++;
+        }
+        if(leveys>pisinRivi){
+          
+          pisinRivi = leveys;
+          
+        }
+      });
+    });
+    
+    return pisinRivi;
+  }
+  
   randomTetromiinoTyyppi(noOfTypes) {
     return Math.floor(Math.random() * noOfTypes + 1);
   }
 
+  
 
   piirraPalikka() {
     this.ctx.fillStyle = this.color; //väritetään haluamamme kohdat valitulla värillä
@@ -71,6 +95,7 @@ class Palikka {
   onPohjalla() {
     return this.y >= 17
   }
+  
   validiSiirto(suunta) {
     //testataan onko seuraava siirto, esim. liike oikealle mahdollinen (rajojen sisällä eikä törmäyksiä)
     //palikan tyypin ja nykyisen sijainnin perusteella
@@ -83,11 +108,18 @@ class Palikka {
     } else if (suunta == "vasemmalle" && xPos <= 0) {//testataan ettei mene vasemmalta reunan yli
       return false
     } else if (suunta == "oikealle") { //seuraavassa switchissä testataan ettei mene oikealta puolelta yli. Helpoin tapa on laskea xPos + palan leveys
-      return (xPos + leveys < 10)
+      return (xPos +leveys < 10)
+      
       //console.log("tyyppi lenght",leveys)
+    } else if (suunta == "rotate") {
+      return true
+
     } else {
       return true
     }
+  }
+  kentanUlkopuolella(){
+   return true
   }
 
   liiku(suunta) {
@@ -105,28 +137,28 @@ class Palikka {
 
     }
     this.piirraPalikka();
-    console.log("palikan päivitetty pos y", palikka.y)
-    console.log("palikan päivitetty pos x", palikka.x)
+    
 
   }
 
   rotate(palikka) {
     // Clone with JSON for immutability
-    let klooni = JSON.parse(JSON.stringify(palikka));
-    // Transpose matrix, p is the Piece.
-    for (let y = 0; y < klooni.shape.length; ++y) {
-      for (let x = 0; x < y; ++x) {
-        [klooni.shape[x][y], klooni.shape[y][x]] = [klooni.shape[y][x], klooni.shape[x][y]];
+    //if (this.validiSiirto("rotate")) {
+      let klooni = JSON.parse(JSON.stringify(palikka));
+      // Transpose matrix, p is the Piece.
+      for (let y = 0; y < klooni.shape.length; ++y) {
+        for (let x = 0; x < y; ++x) {
+          [klooni.shape[x][y], klooni.shape[y][x]] = [klooni.shape[y][x], klooni.shape[x][y]];
+        }
       }
-    }
-    
-    klooni.shape.forEach(row => row.reverse());
-    palikka.shape = klooni.shape;
-    //console.log("klooni",klooni)
-    //console.log("palikka",palikka)
-    this.piirraPalikka();
-    
-    
+
+      klooni.shape.forEach(row => row.reverse());
+      palikka.shape = klooni.shape;
+      //console.log("klooni",klooni)
+      //console.log("palikka",palikka)
+      this.todellinenLeveys = this.getTodellinenLeveys();
+      this.piirraPalikka();
+    //}
   }
 
 }
