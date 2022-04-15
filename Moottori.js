@@ -4,25 +4,40 @@ sekä lopettaa pelisession.
 */
 const canvas = document.getElementById("kentta"); //haetaan pohjaksi kenttä, joka alustettiin html tiedostossa
 const ctx = canvas.getContext("2d");
-let kentta = new Kentta(ctx); //luodaan uusi kenttä
+const kentta = new Kentta(ctx); //luodaan uusi kenttä
+const time = { start: 0, elapsed: 0, level: 1000 };
 
-function clear(){
+function clear() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); //poistaa vanhan instanssin
 }
+let requestId;
+
+function animate(now = 0) { //toimii looppina, mahdollistaa mm. palikan jatkuvan putoamisen
+  time.elapsed = now - time.start;
+  if (time.elapsed > time.level) {
+    time.start = now;
+    clear();
+    kentta.pudotaPalikka(); 
+  }
+  kentta.piirra(); //piirretään kenttä uudestaan päivitetyillä arvoilla
+  requestId = requestAnimationFrame(animate);
+}
+
+
+
+
 function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
   kentta.reset(); //alustetaan kenttä
-  //console.log("palikan aloitus pos y", palikka.y)
-  console.log(MUODOT)
-  
+
+  let palikka = kentta.palikka
+  time.start = performance.now();
+  this.animate(); //looppi käyntiin
   //luodaan uusi palikka aina kun palikka on laskeutunut
-  
- /* if(kentta.palikka.onPohjalla()){
-    
-  }
-  */
+
 
   document.addEventListener("keydown", function (event) {
-    palikka = kentta.palikka
+
+
     //console.log(palikka.tyyppiId)
     if (event.defaultPrevented) {
       return;
@@ -30,7 +45,7 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
     if (event.code === "KeyS") { //liiku alaspäin
       clear();
       palikka.liiku("alas");
-      
+
     }
     if (event.code === "KeyA") { //liiku vasemmalle
       clear();
@@ -41,10 +56,18 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
       palikka.liiku("oikealle");
     }
     if (event.code === "KeyW") { //liiku oikealle
-      clear();
-      palikka.rotate(palikka);
+
+      if (palikka.validiSiirto("rotate")) {
+        clear();
+        palikka.rotate(palikka);
+        //console.log("palikan päivitetty leveys",palikka.getTodellinenLeveys())
+      }
+
     }
     event.preventDefault();
+    //console.log("palikan muoto",palikka.shape)
+
+    //console.log("kentän koko",SARAKKEET*BLOKIN_KOKO)
   }, true);
 }
 
