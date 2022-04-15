@@ -16,8 +16,16 @@ function animate(now = 0) { //toimii looppina, mahdollistaa mm. palikan jatkuvan
   time.elapsed = now - time.start;
   if (time.elapsed > time.level) {
     time.start = now;
-    clear();
-    kentta.pudotaPalikka(); 
+    //luodaan uusi palikka aina kun palikka on laskeutunut
+    if (kentta.palikka.onPohjalla()) {
+      kentta.liimaaPalikkaKentalle();
+      kentta.luoUusiPalikka();
+      console.log("pohjal")
+    }else{
+      clear();
+      kentta.pudotaPalikka();
+    }
+    
   }
   kentta.piirra(); //piirretään kenttä uudestaan päivitetyillä arvoilla
   requestId = requestAnimationFrame(animate);
@@ -29,15 +37,14 @@ function animate(now = 0) { //toimii looppina, mahdollistaa mm. palikan jatkuvan
 function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
   kentta.reset(); //alustetaan kenttä
 
-  let palikka = kentta.palikka
+  
   time.start = performance.now();
   this.animate(); //looppi käyntiin
-  //luodaan uusi palikka aina kun palikka on laskeutunut
 
 
   document.addEventListener("keydown", function (event) {
 
-
+    let palikka = kentta.palikka
     //console.log(palikka.tyyppiId)
     if (event.defaultPrevented) {
       return;

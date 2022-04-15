@@ -27,10 +27,12 @@ class Kentta {
     this.palikka.piirraPalikka();
 
   }
-  piirra() {
+
+  piirra() { //piirtää palikan ja kentän
     this.palikka.piirraPalikka();
     this.piirraKentta();
   }
+
   pudotaPalikka() {
     if(this.palikka.validiSiirto("alas")){
       this.palikka.liiku("alas");
@@ -44,13 +46,13 @@ class Kentta {
     this.palikka.shape.forEach((rivi, y) => {
       rivi.forEach((arvo, x) => {
         if (arvo > 0) {
-          this.grid[y + this.palikka.y][x + this.palikka.x] = arvo;
+          this.grid[y + this.palikka.y][x + this.palikka.x] = arvo; //täytetään gridin paikka palikan arvolla, eli nollat vaihtuvat palikan numeroiksi
         }
       });
     });
   }
 
-  piirraKentta() {
+  piirraKentta() { //piirtää matriisin jokaisen solun
     this.grid.forEach((rivi, y) => {
       rivi.forEach((arvo, x) => {
         if (arvo > 0) {
@@ -62,11 +64,12 @@ class Kentta {
   }
 
 
-  /*luoUusiPalikka() {
-    this.reset();
-    console.log("luouusipalikka kutsuttu")
+  luoUusiPalikka() {
+    this.palikka = new Palikka(ctx);
+    this.palikka.piirraPalikka();
+    //console.log("luouusipalikka kutsuttu")
   }
-*/
+
 
   getEmptyKentta() { //Luo matriisin joka koostuu tyhjistä soluista
     return Array.from(
