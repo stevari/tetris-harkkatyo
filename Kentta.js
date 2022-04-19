@@ -9,6 +9,9 @@ class Kentta {
   ctx;
   grid;
   palikka;
+  pisteet;
+  riveja;
+  taso;
 
   constructor(ctx) { //construktori saa ctx:n referenssiksi
     this.ctx = ctx;
@@ -16,6 +19,8 @@ class Kentta {
 
   }
   alusta() {
+    this.riveja = 0;
+    this.pisteet = 0;
     ctx.canvas.width = SARAKKEET * BLOKIN_KOKO; //Määritellään canvas vakioarvoilla
     ctx.canvas.height = RIVIT * BLOKIN_KOKO;
     ctx.scale(BLOKIN_KOKO, BLOKIN_KOKO); //Skaalataan konteksti jotta palikan mitat sopii kentän mittoihin
@@ -33,18 +38,19 @@ class Kentta {
     this.piirraKentta();
   }
 
-  pudotaPalikka() { 
+  pudotaPalikka() {
     let p = liikkeet[KEY.ALAS](this.palikka);
     if (this.valid(p)) {
       this.palikka.liiku(p);
     } else {
       this.liimaaPalikkaKentalle();
-      
+      this.tuhoaRivit();
+
       if (this.palikka.y === 0) {
         // Peli loppui
         return false;
       }
-     this.luoUusiPalikka();
+      this.luoUusiPalikka();
     }
     return true;
   }
@@ -81,7 +87,7 @@ class Kentta {
     return this.grid[y] && this.grid[y][x] === 0; //tarkistetaan, onko kentän paikalla jo jotain, esim toinen palikka. jos on, arvot != 0, koska ne ovat väritetty
   }
 
-  valid(p) { 
+  valid(p) {
     return p.shape.every((row, dy) => { //käydään palikan (matriisin) jokainen arvo läpi tarkistaen, että seuraava (muutettu) arvo on validi
       return row.every((value, dx) => {
         let x = p.x + dx;
@@ -92,14 +98,14 @@ class Kentta {
         );
       });
     });
-    
+
   }
 
   rotate(palikka) {
     //JSON.stringify() luo palikka -oliosta string -olion, jolla on palikan tiedot.
     //JSON.parse() muuntaa string olion takaisin palikka -olioksi
     //Kääntää palikan, eli matriisin 90 
-    let klooni = JSON.parse(JSON.stringify(palikka)); 
+    let klooni = JSON.parse(JSON.stringify(palikka));
     for (let y = 0; y < klooni.shape.length; ++y) {
       for (let x = 0; x < y; ++x) {
         [klooni.shape[x][y], klooni.shape[y][x]] = [klooni.shape[y][x], klooni.shape[x][y]]; //rivit sarakkeiksi ja päinvastoin
@@ -109,13 +115,39 @@ class Kentta {
     return klooni;
   }
 
+
   luoUusiPalikka() {
     this.palikka = new Palikka(ctx);
     this.palikka.piirraPalikka();
     //console.log("luouusipalikka kutsuttu")
   }
 
+  tuhoaRivit() { //kutsutaan, kun tetromiinot täyttää rivin kentältä
+    let riveja = 0 //tetris rivien määrä
+    let pisteita =0
+    this.grid.forEach((rivi, y) => {
+      if (rivi.every(arvo => arvo > 0)) { //jos rivin jokaisen paikan arvo on != 0, eli siinä on osa tetromiinoa, rivi on tetrisrivi
+        riveja++;
+        pisteita++;
+        this.grid.splice(y, 1); //poistaa rivin gridiltä
 
+        this.grid.unshift(Array(SARAKKEET).fill(0)); //lisää uuden rivin gridin huipulle
+
+      }
+    });
+
+    this.paivitaStatsit(pisteita,riveja);
+  }
+  paivitaStatsit(pisteet, rivit) {
+    this.pisteet += pisteet;
+    this.riveja += rivit;
+    this.lahetaStatsit();
+
+  }
+  lahetaStatsit() { //viedään päivitetyt statsit html tiedostoon.
+    document.getElementById("pisteet").innerHTML = this.pisteet;
+    document.getElementById("tetris-riveja").innerHTML = this.riveja;
+  }
   getEmptyKentta() { //Luo matriisin joka koostuu tyhjistä soluista
     return Array.from(
       { length: RIVIT }, () => Array(SARAKKEET).fill(0)
