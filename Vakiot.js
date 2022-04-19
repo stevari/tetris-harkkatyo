@@ -52,3 +52,10 @@ const KEY = { //Näppäimet. Käytetään useammassa eri luokassa
   ALAS: "KeyS",
   YLOS:"KeyW"
 }
+
+const PISTEET = { //riveistä saadut pisteet
+  YKSI: 100,
+  TUPLA: 300,
+  TRIPLA: 500,
+  TETRIS: 800,
+}
