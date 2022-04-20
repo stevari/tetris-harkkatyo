@@ -43,6 +43,10 @@ class Kentta {
     if (this.valid(p)) {
       this.palikka.liiku(p);
     } else {
+      if (this.palikka.y === 0) {
+        // Game over
+        return false;
+      }
       this.liimaaPalikkaKentalle();
       this.tuhoaRivit();
 
@@ -55,7 +59,7 @@ class Kentta {
     return true;
   }
 
-  liimaaPalikkaKentalle() {
+  liimaaPalikkaKentalle() { //jähmettää palikan kentälle
     this.palikka.shape.forEach((rivi, y) => {
       rivi.forEach((arvo, x) => {
         if (arvo > 0) {
@@ -128,11 +132,24 @@ class Kentta {
     this.grid.forEach((rivi, y) => {
       if (rivi.every(arvo => arvo > 0)) { //jos rivin jokaisen paikan arvo on != 0, eli siinä on osa tetromiinoa, rivi on tetrisrivi
         riveja++;
-        pisteita++;
         this.grid.splice(y, 1); //poistaa rivin gridiltä
 
         this.grid.unshift(Array(SARAKKEET).fill(0)); //lisää uuden rivin gridin huipulle
+        //console.log("pisteet YKSI",PISTEET.YKSI)
 
+      }
+      switch(riveja){ //annetaan pisteitä rikottujen rivien määrän mukaan
+        case 1: 
+          pisteita= PISTEET.YKSI;
+          break;
+        case 2:
+          pisteita = PISTEET.TUPLA;
+          break;
+        case 3:
+          pisteita = PISTEET.TRIPLA;
+          break;
+        case 4:
+          pisteita = PISTEET.TETRIS;  
       }
     });
 
