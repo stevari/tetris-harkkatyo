@@ -1,12 +1,13 @@
 /*
-Tämä luokka on pelilogiikan keskus. Moottori sitoo muut osat yhteen, alustaa kentän ja aloittaa
+Tämä luokka on pelilogiikan keskus. Moottori sitoo muut osat yhteen sekä aloittaa
 sekä lopettaa pelisession.
 */
 const canvas = document.getElementById("kentta"); //haetaan pohjaksi kenttä, joka alustettiin html tiedostossa
 const ctx = canvas.getContext("2d");
 const kentta = new Kentta(ctx); //luodaan uusi kenttä
-const time = { start: 0, elapsed: 0, level: 1000 }; //alustetaan aika
+const time = { start: 0, elapsed: 0, level: 1000 }; //alustetaan aika (arvot millisekunteja). Mitä pienempi level, sitä nopeammin palikat putoaa kentällä
 const peliKaynnissa = true
+
 
 //console.log(MUODOT)
 
@@ -16,18 +17,39 @@ function clear() {
 
 let requestId;
 
+function paivitaTaso(){
+  
+  switch (kentta.pisteet) {
+    case 4000:
+      time.level = 250
+      break
+    case 3000:
+      time.level = 450
+      break
+    case 2000:
+      time.level= 600
+      break
+    case 1000:
+      time.level = 750
+      break
+  }
+
+}
+
 function animate(now = 0) { //toimii looppina, mahdollistaa mm. palikan jatkuvan putoamisen
 
-  time.elapsed = now - time.start;
-  if (time.elapsed > time.level) {
+  paivitaTaso();
+
+  time.elapsed = now - time.start; //kulunt aika = nykinen aika - aloitusaika
+  if (time.elapsed > time.level) { //jos ajastimen aika on määrättyä aikaa suurempi, suorita
     time.start = now;
-    
+
     clear();
-    if(!kentta.pudotaPalikka()){ //palikka putoaa koko olemassaolonsa aikana, kunnes se osuu johonkin
+    if (!kentta.pudotaPalikka()) { //palikka putoaa koko olemassaolonsa aikana, kunnes se osuu johonkin
       this.lopetaPeli(); //jos palikkaa uutta palikkaa ei voida luoda, peli loppuu. Eli silloin kun palikat menee ns. katosta läpi
       return
     }
-     
+
 
   }
   kentta.piirra(); //piirretään kenttä uudestaan päivitetyillä arvoilla
@@ -77,8 +99,6 @@ function lopetaPeli() {  //lopettaa loopin
   this.peliKaynnissa = false
   cancelAnimationFrame(requestId) //lopettaa animoinnin
   //console.log("peli loppui")
-  
-
 }
 
 
