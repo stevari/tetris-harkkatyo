@@ -39,21 +39,20 @@ class Kentta {
   }
 
   pudotaPalikka() {
+    /*joko liikutetaan palikkaa alaspäin tai lopetaan peli koska palikka on kentän ulkopuolella -
+    tai liimataan palikka kentällä ja mahdollisesti päivitetään pisteet jos rivejä tuhoutui
+    */
+
     let p = liikkeet[KEY.ALAS](this.palikka);
     if (this.valid(p)) {
       this.palikka.liiku(p);
     } else {
-      if (this.palikka.y === 0) {
-        // Game over
+      if (this.palikka.y === 0) { //kentän katon yläpuolella
+        // Peli loppui
         return false;
       }
       this.liimaaPalikkaKentalle();
       this.tuhoaRivit();
-
-      if (this.palikka.y === 0) {
-        // Peli loppui
-        return false;
-      }
       this.luoUusiPalikka();
     }
     return true;
@@ -128,7 +127,7 @@ class Kentta {
 
   tuhoaRivit() { //kutsutaan, kun tetromiinot täyttää rivin kentältä
     let riveja = 0 //tetris rivien määrä
-    let pisteita =0
+    let pisteita = 0
     this.grid.forEach((rivi, y) => {
       if (rivi.every(arvo => arvo > 0)) { //jos rivin jokaisen paikan arvo on != 0, eli siinä on osa tetromiinoa, rivi on tetrisrivi
         riveja++;
@@ -138,9 +137,9 @@ class Kentta {
         //console.log("pisteet YKSI",PISTEET.YKSI)
 
       }
-      switch(riveja){ //annetaan pisteitä rikottujen rivien määrän mukaan
-        case 1: 
-          pisteita= PISTEET.YKSI;
+      switch (riveja) { //annetaan pisteitä rikottujen rivien määrän mukaan
+        case 1:
+          pisteita = PISTEET.YKSI;
           break;
         case 2:
           pisteita = PISTEET.TUPLA;
@@ -149,11 +148,11 @@ class Kentta {
           pisteita = PISTEET.TRIPLA;
           break;
         case 4:
-          pisteita = PISTEET.TETRIS;  
+          pisteita = PISTEET.TETRIS;
       }
     });
 
-    this.paivitaStatsit(pisteita,riveja);
+    this.paivitaStatsit(pisteita, riveja);
   }
   paivitaStatsit(pisteet, rivit) {
     this.pisteet += pisteet;
@@ -164,6 +163,7 @@ class Kentta {
   lahetaStatsit() { //viedään päivitetyt statsit html tiedostoon.
     document.getElementById("pisteet").innerHTML = this.pisteet;
     document.getElementById("tetris-riveja").innerHTML = this.riveja;
+    document.getElementById("taso").innerHTML = this.pisteet / 1000;
   }
   getEmptyKentta() { //Luo matriisin joka koostuu tyhjistä soluista
     return Array.from(
