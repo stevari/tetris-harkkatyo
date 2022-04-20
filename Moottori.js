@@ -8,17 +8,14 @@ const kentta = new Kentta(ctx); //luodaan uusi kenttä
 const time = { start: 0, elapsed: 0, level: 1000 }; //alustetaan aika (arvot millisekunteja). Mitä pienempi level, sitä nopeammin palikat putoaa kentällä
 const peliKaynnissa = true
 
-
-//console.log(MUODOT)
-
 function clear() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); //poistaa vanhan instanssin
 }
 
 let requestId;
 
-function paivitaTaso(){
-  
+function paivitaTaso() { //päivittää tason, eli lyhentää animaation päivitysaikaa
+
   switch (kentta.pisteet) {
     case 4000:
       time.level = 250
@@ -27,7 +24,7 @@ function paivitaTaso(){
       time.level = 450
       break
     case 2000:
-      time.level= 600
+      time.level = 600
       break
     case 1000:
       time.level = 750
@@ -90,8 +87,6 @@ function pelaa() { //Aloittaa pelin. Sidottu "pelaa" -nappiin
       }
     });
   }
-
-
 
 }
 

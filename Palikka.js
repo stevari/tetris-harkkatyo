@@ -47,11 +47,9 @@ class Palikka {
     //this.rotaatioAsento = 0;
   }
 
-
   randomTetromiinoTyyppi(tyyppienMaara) {
     return Math.floor(Math.random() * tyyppienMaara + 1);
   }
-
 
   piirraPalikka() {
     this.ctx.fillStyle = this.color; //väritetään haluamamme kohdat valitulla värillä
@@ -71,7 +69,6 @@ class Palikka {
     });
 
   }
-
 
 liiku(p) { //liikuttaa palikkaa manipuloimalla sen x ja y koordinaatteja
   this.x = p.x;

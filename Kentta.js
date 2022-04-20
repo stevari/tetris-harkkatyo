@@ -78,6 +78,7 @@ class Kentta {
       });
     });
   }
+
   seinanSisalla(x) {
     return x >= 0 && x < SARAKKEET; //jos x < 0, palikka on vasemman seinän sisällä. jos taas x > SARAKKAAT (10), x on oikean seinän sisällä
   }
@@ -90,7 +91,7 @@ class Kentta {
     return this.grid[y] && this.grid[y][x] === 0; //tarkistetaan, onko kentän paikalla jo jotain, esim toinen palikka. jos on, arvot != 0, koska ne ovat väritetty
   }
 
-  valid(p) {
+  valid(p) { //tarkistetaan, onko palikan seuraava siirto validi
     return p.shape.every((row, dy) => { //käydään palikan (matriisin) jokainen arvo läpi tarkistaen, että seuraava (muutettu) arvo on validi
       return row.every((value, dx) => {
         let x = p.x + dx;
@@ -104,7 +105,7 @@ class Kentta {
 
   }
 
-  rotate(palikka) {
+  rotate(palikka) { //käännetään palikkaa 90 astetta suhteessa kenttään
     //JSON.stringify() luo palikka -oliosta string -olion, jolla on palikan tiedot.
     //JSON.parse() muuntaa string olion takaisin palikka -olioksi
     //Kääntää palikan, eli matriisin 90 
@@ -154,7 +155,7 @@ class Kentta {
 
     this.paivitaStatsit(pisteita, riveja);
   }
-  paivitaStatsit(pisteet, rivit) {
+  paivitaStatsit(pisteet, rivit) { 
     this.pisteet += pisteet;
     this.riveja += rivit;
     this.lahetaStatsit();
