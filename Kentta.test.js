@@ -1,6 +1,5 @@
-import rotate from "./rotate"
+const rotate = require('./Kentta.js');
 
-const p = new Palikka(ctx)
 test("Ottaa palikasta kopion, rotatoi sitä muuttammalla arvoja ja palauttaa kopion", () =>{
-    expect(rotate())
+    expect(rotate().not.toBe(null))
 })

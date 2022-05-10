@@ -172,3 +172,5 @@ class Kentta {
     );
   }
 }
+
+export default rotate()
