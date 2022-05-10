@@ -79,3 +79,5 @@ liiku(p) { //liikuttaa palikkaa manipuloimalla sen x ja y koordinaatteja
 }
 
 }
+
+export default randomTetromiinoTyyppi
